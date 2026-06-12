@@ -477,3 +477,41 @@
     height: 270px;
   }
 }
+
+/* ── 3D Loading Indicator ─────────────────────────────────── */
+.ar-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.ar-loading p {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 16px;
+  letter-spacing: 0.05em;
+}
+
+.ar-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: spin3d 0.8s linear infinite;
+}
+
+@keyframes spin3d {
+  to { transform: rotate(360deg); }
+}
+
+/* Ensure Three.js canvas overlays correctly */
+#ar-canvas {
+  z-index: 2;
+}

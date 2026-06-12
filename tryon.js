@@ -1,57 +1,58 @@
 import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs";
 
-// ─── Config ────────────────────────────────────────────────
+/* ============================================================
+   AELTRIX — 3D AR Try-On Engine
+   Three.js + MediaPipe Face Landmarker
+   ============================================================ */
+
+// ─── Product Catalog ───────────────────────────────────────
 const CATEGORIES = {
   eyewear: {
     label: 'Eyewear Try-On',
     panelTitle: 'Select a Frame',
-    guideType: 'face',
     products: [
-      { id: 'classic', name: 'Classic', type: 'svg', color: '#1a1a2e', frameWidth: 280 },
-      { id: 'aviator', name: 'Aviator', type: 'svg', color: '#2d2d44', frameWidth: 300 },
-      { id: 'round', name: 'Round', type: 'svg', color: '#8B4513', frameWidth: 260 },
-      { id: 'cateye', name: 'Cat Eye', type: 'svg', color: '#4a0e3c', frameWidth: 280 },
-      { id: 'wayfarer', name: 'Wayfarer', type: 'svg', color: '#0a0a1a', frameWidth: 290 },
-      { id: 'oversized', name: 'Oversized', type: 'svg', color: '#1c1c3a', frameWidth: 320 },
-    ]
-  },
-  apparel: {
-    label: 'Apparel Try-On',
-    panelTitle: 'Select a Garment',
-    guideType: 'body',
-    products: [
-      { id: 'blazer', name: 'Blazer', type: 'svg', color: '#1a1a2e' },
-      { id: 'tshirt', name: 'T-Shirt', type: 'svg', color: '#2d3436' },
-      { id: 'hoodie', name: 'Hoodie', type: 'svg', color: '#6c3483' },
-      { id: 'jacket', name: 'Jacket', type: 'svg', color: '#1B4332' },
-      { id: 'vest', name: 'Vest', type: 'svg', color: '#4a4e69' },
+      { id: 'classic',   name: 'Classic',     color: '#1a1a2e', lensColor: '#4488aa', frameWidth: 0.14 },
+      { id: 'aviator',   name: 'Aviator',     color: '#C0C0C0', lensColor: '#2a5a2a', frameWidth: 0.15 },
+      { id: 'round',     name: 'Round',       color: '#8B4513', lensColor: '#553322', frameWidth: 0.12 },
+      { id: 'cateye',    name: 'Cat Eye',     color: '#4a0e3c', lensColor: '#442244', frameWidth: 0.14 },
+      { id: 'wayfarer',  name: 'Wayfarer',    color: '#0a0a1a', lensColor: '#333355', frameWidth: 0.14 },
+      { id: 'oversized', name: 'Oversized',   color: '#1c1c3a', lensColor: '#334466', frameWidth: 0.16 },
     ]
   },
   jewelry: {
     label: 'Jewelry Try-On',
     panelTitle: 'Select a Piece',
-    guideType: 'face',
     products: [
-      { id: 'necklace-gold', name: 'Gold Chain', type: 'svg', color: '#DAA520' },
-      { id: 'necklace-silver', name: 'Silver Chain', type: 'svg', color: '#C0C0C0' },
-      { id: 'earring-drop', name: 'Drop Earrings', type: 'svg', color: '#DAA520' },
-      { id: 'earring-stud', name: 'Stud Earrings', type: 'svg', color: '#E5E4E2' },
-      { id: 'choker', name: 'Choker', type: 'svg', color: '#B8860B' },
+      { id: 'necklace-gold',   name: 'Gold Chain',    color: '#DAA520', metalness: 0.9 },
+      { id: 'necklace-silver', name: 'Silver Chain',   color: '#C0C0C0', metalness: 0.95 },
+      { id: 'earring-drop',    name: 'Drop Earrings',  color: '#DAA520', metalness: 0.9 },
+      { id: 'earring-stud',    name: 'Stud Earrings',  color: '#E5E4E2', metalness: 0.95 },
+      { id: 'choker',          name: 'Choker',         color: '#B8860B', metalness: 0.85 },
     ]
   },
   cosmetics: {
     label: 'Cosmetics Try-On',
     panelTitle: 'Select a Shade',
-    guideType: 'face',
     products: [
-      { id: 'lip-red', name: 'Classic Red', type: 'color', color: '#C0392B' },
-      { id: 'lip-rose', name: 'Rosé', type: 'color', color: '#E75480' },
-      { id: 'lip-berry', name: 'Berry', type: 'color', color: '#8E4585' },
-      { id: 'lip-nude', name: 'Nude', type: 'color', color: '#C69C72' },
-      { id: 'lip-coral', name: 'Coral', type: 'color', color: '#FF6F61' },
-      { id: 'lip-plum', name: 'Plum', type: 'color', color: '#6B2D5B' },
-      { id: 'lip-pink', name: 'Hot Pink', type: 'color', color: '#FF1493' },
-      { id: 'lip-mauve', name: 'Mauve', type: 'color', color: '#B784A7' },
+      { id: 'lip-red',   name: 'Classic Red', color: '#C0392B' },
+      { id: 'lip-rose',  name: 'Rosé',        color: '#E75480' },
+      { id: 'lip-berry', name: 'Berry',       color: '#8E4585' },
+      { id: 'lip-nude',  name: 'Nude',         color: '#C69C72' },
+      { id: 'lip-coral', name: 'Coral',       color: '#FF6F61' },
+      { id: 'lip-plum',  name: 'Plum',        color: '#6B2D5B' },
+      { id: 'lip-pink',  name: 'Hot Pink',    color: '#FF1493' },
+      { id: 'lip-mauve', name: 'Mauve',       color: '#B784A7' },
+    ]
+  },
+  apparel: {
+    label: 'Apparel Try-On',
+    panelTitle: 'Select a Garment',
+    products: [
+      { id: 'blazer',  name: 'Blazer',  color: '#1a1a2e' },
+      { id: 'tshirt',  name: 'T-Shirt', color: '#2d3436' },
+      { id: 'hoodie',  name: 'Hoodie',  color: '#6c3483' },
+      { id: 'jacket',  name: 'Jacket',  color: '#1B4332' },
+      { id: 'vest',    name: 'Vest',    color: '#4a4e69' },
     ]
   }
 };
@@ -63,9 +64,14 @@ let stream = null;
 let baseScale = 1;
 let userOffsetY = 0;
 
+// MediaPipe
 let faceLandmarker;
 let lastVideoTime = -1;
-let isTracking = false;
+
+// Three.js
+let scene, camera, renderer;
+let currentModel = null; // Currently displayed 3D group
+let ambientLight, dirLight, pointLight;
 
 // ─── DOM ───────────────────────────────────────────────────
 const categoryLabel = document.getElementById('tryon-category-label');
@@ -75,7 +81,7 @@ const viewport = document.getElementById('tryon-viewport');
 const errorScreen = document.getElementById('tryon-error');
 const cameraFeed = document.getElementById('camera-feed');
 const arCanvas = document.getElementById('ar-canvas');
-const faceGuide = document.getElementById('face-guide');
+const arLoading = document.getElementById('ar-loading');
 const captureBtn = document.getElementById('capture-btn');
 const captureFlash = document.getElementById('capture-flash');
 const captureModal = document.getElementById('capture-modal');
@@ -89,14 +95,560 @@ const panelToggle = document.getElementById('panel-toggle');
 const sizeSlider = document.getElementById('size-slider');
 const positionSlider = document.getElementById('position-slider');
 
+// ─── Three.js Setup ────────────────────────────────────────
+function initThreeJS() {
+  scene = new THREE.Scene();
+
+  // Orthographic camera matching normalized coords
+  camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0.01, 100);
+  camera.position.z = 1;
+
+  renderer = new THREE.WebGLRenderer({
+    canvas: arCanvas,
+    alpha: true,
+    antialias: true,
+    preserveDrawingBuffer: true // needed for screenshot capture
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+
+  // Lighting
+  ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+
+  dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+  dirLight.position.set(0.3, 0.5, 1);
+  scene.add(dirLight);
+
+  pointLight = new THREE.PointLight(0x88ccff, 0.4, 2);
+  pointLight.position.set(-0.3, 0.2, 0.5);
+  scene.add(pointLight);
+}
+
+// ─── 3D Model Builders ────────────────────────────────────
+function buildEyewear(product) {
+  const group = new THREE.Group();
+  const fw = product.frameWidth || 0.14;
+  const frameColor = new THREE.Color(product.color);
+  const lensColor = new THREE.Color(product.lensColor || '#333355');
+
+  const frameMat = new THREE.MeshStandardMaterial({
+    color: frameColor,
+    metalness: 0.3,
+    roughness: 0.4,
+  });
+
+  const lensMat = new THREE.MeshPhysicalMaterial({
+    color: lensColor,
+    metalness: 0.1,
+    roughness: 0.05,
+    transmission: 0.6,
+    opacity: 0.6,
+    transparent: true,
+    ior: 1.5,
+  });
+
+  const lensRadius = fw * 0.38;
+  const bridgeGap = fw * 0.06;
+  const frameThickness = fw * 0.018;
+
+  // Lens shapes based on product style
+  let lensGeometry;
+  switch (product.id) {
+    case 'round':
+    case 'oversized':
+      lensGeometry = new THREE.CircleGeometry(lensRadius, 32);
+      break;
+    case 'cateye': {
+      const shape = new THREE.Shape();
+      const r = lensRadius;
+      shape.moveTo(-r, 0);
+      shape.quadraticCurveTo(-r, -r * 0.9, -r * 0.3, -r * 0.95);
+      shape.lineTo(r * 0.5, -r * 0.7);
+      shape.lineTo(r, -r * 0.4);
+      shape.quadraticCurveTo(r * 1.05, r * 0.3, r * 0.5, r * 0.5);
+      shape.quadraticCurveTo(0, r * 0.6, -r, 0);
+      lensGeometry = new THREE.ShapeGeometry(shape);
+      break;
+    }
+    case 'aviator': {
+      const shape = new THREE.Shape();
+      const r = lensRadius;
+      shape.moveTo(0, -r * 0.3);
+      shape.quadraticCurveTo(-r * 0.5, -r, -r, -r * 0.4);
+      shape.quadraticCurveTo(-r * 1.1, r * 0.5, -r * 0.5, r * 0.7);
+      shape.quadraticCurveTo(0, r * 0.5, 0, -r * 0.3);
+      lensGeometry = new THREE.ShapeGeometry(shape);
+      break;
+    }
+    default: {
+      // Rectangular with rounded corners
+      const shape = new THREE.Shape();
+      const w = lensRadius;
+      const h = lensRadius * 0.75;
+      const cr = lensRadius * 0.15;
+      shape.moveTo(-w + cr, -h);
+      shape.lineTo(w - cr, -h);
+      shape.quadraticCurveTo(w, -h, w, -h + cr);
+      shape.lineTo(w, h - cr);
+      shape.quadraticCurveTo(w, h, w - cr, h);
+      shape.lineTo(-w + cr, h);
+      shape.quadraticCurveTo(-w, h, -w, h - cr);
+      shape.lineTo(-w, -h + cr);
+      shape.quadraticCurveTo(-w, -h, -w + cr, -h);
+      lensGeometry = new THREE.ShapeGeometry(shape);
+    }
+  }
+
+  // Left lens
+  const leftLens = new THREE.Mesh(lensGeometry, lensMat);
+  leftLens.position.x = -(lensRadius + bridgeGap);
+  group.add(leftLens);
+
+  // Right lens
+  const rightLens = new THREE.Mesh(lensGeometry.clone(), lensMat);
+  rightLens.position.x = lensRadius + bridgeGap;
+  group.add(rightLens);
+
+  // Frame rings (torus around each lens)
+  const torusRadius = lensRadius * 1.02;
+  const tubeRadius = frameThickness;
+
+  if (product.id === 'round' || product.id === 'oversized') {
+    const leftRing = new THREE.Mesh(
+      new THREE.TorusGeometry(torusRadius, tubeRadius, 8, 48),
+      frameMat
+    );
+    leftRing.position.x = -(lensRadius + bridgeGap);
+    group.add(leftRing);
+
+    const rightRing = new THREE.Mesh(
+      new THREE.TorusGeometry(torusRadius, tubeRadius, 8, 48),
+      frameMat
+    );
+    rightRing.position.x = lensRadius + bridgeGap;
+    group.add(rightRing);
+  } else {
+    // Frame borders for non-circular lenses
+    const borderMat = frameMat.clone();
+    const leftBorder = new THREE.Mesh(lensGeometry.clone(), borderMat);
+    leftBorder.position.x = -(lensRadius + bridgeGap);
+    leftBorder.position.z = -0.001;
+    leftBorder.scale.set(1.08, 1.08, 1);
+    group.add(leftBorder);
+
+    const rightBorder = new THREE.Mesh(lensGeometry.clone(), borderMat);
+    rightBorder.position.x = lensRadius + bridgeGap;
+    rightBorder.position.z = -0.001;
+    rightBorder.scale.set(1.08, 1.08, 1);
+    group.add(rightBorder);
+  }
+
+  // Bridge
+  const bridgeCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(-bridgeGap, lensRadius * 0.1, 0),
+    new THREE.Vector3(0, lensRadius * 0.3, 0.005),
+    new THREE.Vector3(bridgeGap, lensRadius * 0.1, 0)
+  );
+  const bridgeGeo = new THREE.TubeGeometry(bridgeCurve, 12, tubeRadius, 6, false);
+  const bridge = new THREE.Mesh(bridgeGeo, frameMat);
+  group.add(bridge);
+
+  // Temples (arms)
+  const templeLength = fw * 0.35;
+  const leftTempleCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(-(fw * 0.5 + bridgeGap), lensRadius * 0.15, 0),
+    new THREE.Vector3(-(fw * 0.5 + bridgeGap + templeLength * 0.5), lensRadius * 0.1, -0.02),
+    new THREE.Vector3(-(fw * 0.5 + bridgeGap + templeLength), lensRadius * 0.05, -0.04)
+  );
+  const leftTempleGeo = new THREE.TubeGeometry(leftTempleCurve, 8, tubeRadius * 0.8, 6, false);
+  group.add(new THREE.Mesh(leftTempleGeo, frameMat));
+
+  const rightTempleCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(fw * 0.5 + bridgeGap, lensRadius * 0.15, 0),
+    new THREE.Vector3(fw * 0.5 + bridgeGap + templeLength * 0.5, lensRadius * 0.1, -0.02),
+    new THREE.Vector3(fw * 0.5 + bridgeGap + templeLength, lensRadius * 0.05, -0.04)
+  );
+  const rightTempleGeo = new THREE.TubeGeometry(rightTempleCurve, 8, tubeRadius * 0.8, 6, false);
+  group.add(new THREE.Mesh(rightTempleGeo, frameMat));
+
+  return group;
+}
+
+function buildNecklace(product) {
+  const group = new THREE.Group();
+  const color = new THREE.Color(product.color);
+  const mat = new THREE.MeshStandardMaterial({
+    color,
+    metalness: product.metalness || 0.9,
+    roughness: 0.15,
+  });
+
+  const isChoker = product.id === 'choker';
+  const chainWidth = isChoker ? 0.12 : 0.15;
+  const chainDrop = isChoker ? 0.02 : 0.06;
+  const tubeR = isChoker ? 0.004 : 0.002;
+
+  // Chain curve
+  const curve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(-chainWidth, 0, 0),
+    new THREE.Vector3(0, chainDrop, 0.01),
+    new THREE.Vector3(chainWidth, 0, 0)
+  );
+  const chainGeo = new THREE.TubeGeometry(curve, 32, tubeR, 8, false);
+  group.add(new THREE.Mesh(chainGeo, mat));
+
+  // Pendant for necklaces
+  if (product.id.includes('necklace')) {
+    const pendantGeo = new THREE.SphereGeometry(0.008, 16, 16);
+    const pendant = new THREE.Mesh(pendantGeo, mat);
+    pendant.position.set(0, chainDrop * 0.85, 0.01);
+    group.add(pendant);
+
+    // Add a tiny diamond shape
+    const diamondGeo = new THREE.OctahedronGeometry(0.005, 0);
+    const diamondMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      metalness: 0.0,
+      roughness: 0.0,
+      transmission: 0.8,
+      ior: 2.4,
+    });
+    const diamond = new THREE.Mesh(diamondGeo, diamondMat);
+    diamond.position.set(0, chainDrop * 0.85 + 0.012, 0.01);
+    group.add(diamond);
+  }
+
+  return group;
+}
+
+function buildEarrings(product) {
+  const group = new THREE.Group();
+  const color = new THREE.Color(product.color);
+  const mat = new THREE.MeshStandardMaterial({
+    color,
+    metalness: product.metalness || 0.9,
+    roughness: 0.15,
+  });
+
+  if (product.id === 'earring-stud') {
+    // Left stud
+    const leftStud = new THREE.Mesh(new THREE.SphereGeometry(0.006, 16, 16), mat);
+    leftStud.name = 'leftEarring';
+    group.add(leftStud);
+
+    // Right stud
+    const rightStud = new THREE.Mesh(new THREE.SphereGeometry(0.006, 16, 16), mat);
+    rightStud.name = 'rightEarring';
+    group.add(rightStud);
+  } else {
+    // Drop earrings
+    // Left
+    const leftGroup = new THREE.Group();
+    leftGroup.name = 'leftEarring';
+    const hookCurve = new THREE.QuadraticBezierCurve3(
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0.003, 0.015, 0),
+      new THREE.Vector3(0, 0.03, 0)
+    );
+    leftGroup.add(new THREE.Mesh(new THREE.TubeGeometry(hookCurve, 8, 0.001, 6), mat));
+    const dropGeo = new THREE.OctahedronGeometry(0.006, 0);
+    const drop = new THREE.Mesh(dropGeo, mat);
+    drop.position.y = 0.038;
+    leftGroup.add(drop);
+    group.add(leftGroup);
+
+    // Right
+    const rightGroup = leftGroup.clone();
+    rightGroup.name = 'rightEarring';
+    group.add(rightGroup);
+  }
+
+  return group;
+}
+
+// ─── Build 3D Model for Current Product ───────────────────
+function buildModel(product) {
+  if (currentModel) {
+    scene.remove(currentModel);
+    currentModel = null;
+  }
+
+  let model;
+  if (currentCategory === 'eyewear') {
+    model = buildEyewear(product);
+  } else if (currentCategory === 'jewelry') {
+    if (product.id.includes('earring')) {
+      model = buildEarrings(product);
+    } else {
+      model = buildNecklace(product);
+    }
+  }
+
+  if (model) {
+    scene.add(model);
+    currentModel = model;
+  }
+}
+
+// ─── Landmark → 3D Position Mapping ───────────────────────
+function landmarkTo3D(landmark) {
+  // MediaPipe landmarks are normalized [0,1]. Convert to Three.js coords:
+  // x: 0→1 maps to -0.5→+0.5 (but mirrored for selfie)
+  // y: 0→1 maps to +0.5→-0.5 (flip Y)
+  // z: depth (small values)
+  return new THREE.Vector3(
+    -(landmark.x - 0.5),
+    -(landmark.y - 0.5),
+    -landmark.z * 0.5
+  );
+}
+
+function getHeadRotation(landmarks) {
+  // Use eye corners + nose to compute head rotation
+  const leftEye = landmarkTo3D(landmarks[33]);
+  const rightEye = landmarkTo3D(landmarks[263]);
+  const noseTip = landmarkTo3D(landmarks[1]);
+  const forehead = landmarkTo3D(landmarks[10]);
+  const chin = landmarkTo3D(landmarks[152]);
+
+  // Roll (tilt) from eye line
+  const eyeDelta = new THREE.Vector3().subVectors(rightEye, leftEye);
+  const roll = Math.atan2(eyeDelta.y, eyeDelta.x);
+
+  // Yaw from nose position relative to eye center
+  const eyeCenter = new THREE.Vector3().addVectors(leftEye, rightEye).multiplyScalar(0.5);
+  const eyeDist = leftEye.distanceTo(rightEye);
+  const noseOffset = noseTip.x - eyeCenter.x;
+  const yaw = Math.asin(Math.max(-1, Math.min(1, noseOffset / (eyeDist * 0.5)))) * 1.5;
+
+  // Pitch from forehead-chin vs nose
+  const faceHeight = forehead.distanceTo(chin);
+  const noseUp = noseTip.y - chin.y;
+  const pitch = -(noseUp / faceHeight - 0.35) * 2.0;
+
+  return { roll, yaw, pitch };
+}
+
+// ─── Render Loop ──────────────────────────────────────────
+function renderLoop() {
+  if (!faceLandmarker || !currentProduct) {
+    renderer.render(scene, camera);
+    requestAnimationFrame(renderLoop);
+    return;
+  }
+
+  const now = performance.now();
+  if (lastVideoTime !== cameraFeed.currentTime) {
+    lastVideoTime = cameraFeed.currentTime;
+
+    try {
+      const results = faceLandmarker.detectForVideo(cameraFeed, now);
+
+      if (results.faceLandmarks && results.faceLandmarks.length > 0) {
+        const landmarks = results.faceLandmarks[0];
+        updateModelPosition(landmarks);
+        if (currentModel) currentModel.visible = true;
+      } else {
+        if (currentModel) currentModel.visible = false;
+      }
+    } catch (e) {
+      console.error("Tracking error:", e);
+    }
+  }
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(renderLoop);
+}
+
+function updateModelPosition(landmarks) {
+  if (!currentModel) return;
+
+  const leftEye = landmarkTo3D(landmarks[33]);
+  const rightEye = landmarkTo3D(landmarks[263]);
+  const eyeCenter = new THREE.Vector3().addVectors(leftEye, rightEye).multiplyScalar(0.5);
+  const eyeDist = leftEye.distanceTo(rightEye);
+  const { roll, yaw, pitch } = getHeadRotation(landmarks);
+
+  const offsetY = (userOffsetY / 100) * 0.05;
+
+  switch (currentCategory) {
+    case 'eyewear': {
+      // Scale based on interpupillary distance
+      const targetWidth = eyeDist * 2.2 * baseScale;
+      const modelWidth = currentProduct.frameWidth || 0.14;
+      const scale = targetWidth / modelWidth;
+
+      currentModel.position.set(eyeCenter.x, eyeCenter.y + offsetY, eyeCenter.z);
+      currentModel.scale.set(scale, scale, scale);
+      currentModel.rotation.set(pitch, yaw, roll);
+      break;
+    }
+    case 'jewelry': {
+      if (currentProduct.id.includes('earring')) {
+        const lEar = landmarkTo3D(landmarks[234]);
+        const rEar = landmarkTo3D(landmarks[454]);
+        const earScale = eyeDist * 8 * baseScale;
+
+        const leftE = currentModel.children.find(c => c.name === 'leftEarring');
+        const rightE = currentModel.children.find(c => c.name === 'rightEarring');
+
+        if (leftE) {
+          leftE.position.copy(lEar);
+          leftE.position.y += offsetY;
+          leftE.scale.set(earScale, earScale, earScale);
+          leftE.rotation.set(pitch * 0.5, yaw * 0.5, roll);
+        }
+        if (rightE) {
+          rightE.position.copy(rEar);
+          rightE.position.y += offsetY;
+          rightE.scale.set(earScale, earScale, earScale);
+          rightE.rotation.set(pitch * 0.5, yaw * 0.5, roll);
+        }
+
+        currentModel.position.set(0, 0, 0);
+        currentModel.scale.set(1, 1, 1);
+        currentModel.rotation.set(0, 0, 0);
+      } else {
+        // Necklace: position below chin
+        const chin = landmarkTo3D(landmarks[152]);
+        const neckScale = eyeDist * 10 * baseScale;
+
+        currentModel.position.set(chin.x, chin.y - 0.02 + offsetY, chin.z);
+        currentModel.scale.set(neckScale, neckScale, neckScale);
+        currentModel.rotation.set(pitch * 0.3, yaw, roll);
+      }
+      break;
+    }
+    case 'cosmetics': {
+      // Cosmetics handled via 2D canvas overlay (lip color)
+      break;
+    }
+  }
+}
+
+// ─── Cosmetics (2D lip overlay — stays on canvas) ─────────
+function renderCosmetics(landmarks) {
+  if (currentCategory !== 'cosmetics' || !currentProduct) return;
+
+  const vw = arCanvas.width;
+  const vh = arCanvas.height;
+
+  // Get a 2D context on top of Three.js
+  // We'll use an offscreen canvas for cosmetics
+  if (!window._cosmeticsCanvas) {
+    window._cosmeticsCanvas = document.createElement('canvas');
+    window._cosmeticsCanvas.style.cssText = arCanvas.style.cssText;
+    window._cosmeticsCanvas.style.position = 'absolute';
+    window._cosmeticsCanvas.style.top = '0';
+    window._cosmeticsCanvas.style.left = '0';
+    window._cosmeticsCanvas.style.width = '100%';
+    window._cosmeticsCanvas.style.height = '100%';
+    window._cosmeticsCanvas.style.pointerEvents = 'none';
+    window._cosmeticsCanvas.style.zIndex = '3';
+    viewport.appendChild(window._cosmeticsCanvas);
+  }
+
+  const cc = window._cosmeticsCanvas;
+  cc.width = vw;
+  cc.height = vh;
+  const ctx = cc.getContext('2d');
+  ctx.clearRect(0, 0, vw, vh);
+
+  const lipColor = currentProduct.color;
+  const upperLipOuter = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291];
+  const upperLipInner = [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308];
+  const lowerLipOuter = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291];
+  const lowerLipInner = [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308];
+
+  ctx.save();
+  ctx.fillStyle = lipColor;
+  ctx.globalAlpha = 0.55;
+
+  // Upper lip
+  ctx.beginPath();
+  upperLipOuter.forEach((idx, i) => {
+    const pt = landmarks[idx];
+    if (i === 0) ctx.moveTo(pt.x * vw, pt.y * vh);
+    else ctx.lineTo(pt.x * vw, pt.y * vh);
+  });
+  for (let i = upperLipInner.length - 1; i >= 0; i--) {
+    const pt = landmarks[upperLipInner[i]];
+    ctx.lineTo(pt.x * vw, pt.y * vh);
+  }
+  ctx.closePath();
+  ctx.fill();
+
+  // Lower lip
+  ctx.beginPath();
+  lowerLipOuter.forEach((idx, i) => {
+    const pt = landmarks[idx];
+    if (i === 0) ctx.moveTo(pt.x * vw, pt.y * vh);
+    else ctx.lineTo(pt.x * vw, pt.y * vh);
+  });
+  for (let i = lowerLipInner.length - 1; i >= 0; i--) {
+    const pt = landmarks[lowerLipInner[i]];
+    ctx.lineTo(pt.x * vw, pt.y * vh);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+// ─── Modified render loop to also handle cosmetics ────────
+function renderLoopFull() {
+  if (!faceLandmarker || !currentProduct) {
+    if (currentCategory !== 'cosmetics') renderer.render(scene, camera);
+    requestAnimationFrame(renderLoopFull);
+    return;
+  }
+
+  const now = performance.now();
+  if (lastVideoTime !== cameraFeed.currentTime) {
+    lastVideoTime = cameraFeed.currentTime;
+
+    try {
+      const results = faceLandmarker.detectForVideo(cameraFeed, now);
+
+      if (results.faceLandmarks && results.faceLandmarks.length > 0) {
+        const landmarks = results.faceLandmarks[0];
+
+        if (currentCategory === 'cosmetics') {
+          renderCosmetics(landmarks);
+          if (currentModel) currentModel.visible = false;
+        } else {
+          // Hide cosmetics overlay if it exists
+          if (window._cosmeticsCanvas) {
+            const ctx = window._cosmeticsCanvas.getContext('2d');
+            ctx.clearRect(0, 0, window._cosmeticsCanvas.width, window._cosmeticsCanvas.height);
+          }
+          updateModelPosition(landmarks);
+          if (currentModel) currentModel.visible = true;
+        }
+      } else {
+        if (currentModel) currentModel.visible = false;
+        if (window._cosmeticsCanvas) {
+          const ctx = window._cosmeticsCanvas.getContext('2d');
+          ctx.clearRect(0, 0, window._cosmeticsCanvas.width, window._cosmeticsCanvas.height);
+        }
+      }
+    } catch (e) {
+      console.error("Tracking error:", e);
+    }
+  }
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(renderLoopFull);
+}
+
 // ─── Init ──────────────────────────────────────────────────
 async function init() {
   const params = new URLSearchParams(window.location.search);
   currentCategory = params.get('category') || 'eyewear';
-
-  if (!CATEGORIES[currentCategory]) {
-    currentCategory = 'eyewear';
-  }
+  if (!CATEGORIES[currentCategory]) currentCategory = 'eyewear';
 
   const cat = CATEGORIES[currentCategory];
   document.title = `${cat.label} — AELTRIX`;
@@ -104,40 +656,38 @@ async function init() {
 
   enableCameraBtn.addEventListener('click', startCamera);
   captureBtn.addEventListener('click', capturePhoto);
-  closeCaptureBtn.addEventListener('click', closeCaptureModal);
-  panelToggle.addEventListener('click', togglePanel);
+  closeCaptureBtn.addEventListener('click', () => { captureModal.style.display = 'none'; });
+  panelToggle.addEventListener('click', () => { panel.classList.toggle('collapsed'); });
 
-  sizeSlider.addEventListener('input', (e) => {
-    baseScale = e.target.value / 100;
-  });
+  sizeSlider.addEventListener('input', (e) => { baseScale = e.target.value / 100; });
+  positionSlider.addEventListener('input', (e) => { userOffsetY = parseInt(e.target.value); });
 
-  positionSlider.addEventListener('input', (e) => {
-    userOffsetY = parseInt(e.target.value);
-  });
+  // Init Three.js
+  initThreeJS();
 
-  // Preload MediaPipe
+  // Init MediaPipe
   try {
     const vision = await FilesetResolver.forVisionTasks(
       "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
     );
     faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
         delegate: "GPU"
       },
       outputFaceBlendshapes: false,
       runningMode: "VIDEO",
       numFaces: 1
     });
-    console.log("MediaPipe initialized successfully.");
+    console.log("✓ MediaPipe FaceLandmarker ready");
   } catch (err) {
-    console.error("Failed to load MediaPipe:", err);
+    console.error("MediaPipe init failed:", err);
   }
 }
 
 // ─── Camera ────────────────────────────────────────────────
 async function startCamera() {
-  enableCameraBtn.textContent = "Loading AI Engine...";
+  enableCameraBtn.textContent = "Loading 3D Engine...";
   enableCameraBtn.disabled = true;
 
   try {
@@ -147,10 +697,20 @@ async function startCamera() {
     });
 
     cameraFeed.srcObject = stream;
-    
+
     cameraFeed.addEventListener('loadedmetadata', () => {
-      arCanvas.width = cameraFeed.videoWidth;
-      arCanvas.height = cameraFeed.videoHeight;
+      const vw = cameraFeed.videoWidth;
+      const vh = cameraFeed.videoHeight;
+      renderer.setSize(vw, vh);
+
+      // Update camera aspect
+      const aspect = vw / vh;
+      camera.left = -0.5 * aspect;
+      camera.right = 0.5 * aspect;
+      camera.top = 0.5;
+      camera.bottom = -0.5;
+      camera.updateProjectionMatrix();
+
       cameraFeed.play();
     });
 
@@ -158,12 +718,8 @@ async function startCamera() {
       permissionScreen.style.display = 'none';
       viewport.style.display = 'block';
       panel.style.display = 'block';
-
       buildProductPanel();
-      
-      // Start render loop
-      isTracking = true;
-      requestAnimationFrame(renderLoop);
+      requestAnimationFrame(renderLoopFull);
     });
 
   } catch (err) {
@@ -182,7 +738,7 @@ function buildProductPanel() {
   cat.products.forEach((product, index) => {
     const option = document.createElement('div');
 
-    if (product.type === 'color') {
+    if (currentCategory === 'cosmetics') {
       option.className = 'product-option color-swatch';
       option.innerHTML = `<div class="swatch-inner" style="background:${product.color}"></div>`;
     } else {
@@ -208,429 +764,7 @@ function selectProduct(product, element) {
   currentProduct = product;
   panelProducts.querySelectorAll('.product-option').forEach(el => el.classList.remove('active'));
   element.classList.add('active');
-}
-
-function togglePanel() {
-  panel.classList.toggle('collapsed');
-}
-
-// ─── Continuous Render Loop ────────────────────────────────
-async function renderLoop() {
-  if (!isTracking || !currentProduct || !faceLandmarker) {
-    requestAnimationFrame(renderLoop);
-    return;
-  }
-
-  const ctx = arCanvas.getContext('2d');
-  const vw = arCanvas.width;
-  const vh = arCanvas.height;
-
-  // Clear canvas
-  ctx.clearRect(0, 0, vw, vh);
-
-  // Detect faces
-  let startTimeMs = performance.now();
-  if (lastVideoTime !== cameraFeed.currentTime) {
-    lastVideoTime = cameraFeed.currentTime;
-    try {
-      const results = faceLandmarker.detectForVideo(cameraFeed, startTimeMs);
-
-      if (results.faceLandmarks && results.faceLandmarks.length > 0) {
-        const landmarks = results.faceLandmarks[0];
-        renderOverlay(ctx, vw, vh, landmarks);
-      } else {
-        // Fallback for apparel or if face not found - center it
-        renderFallback(ctx, vw, vh);
-      }
-    } catch (e) {
-      console.error("Tracking error:", e);
-      renderFallback(ctx, vw, vh);
-    }
-  } else {
-    // Just re-draw the fallback if video hasn't updated to avoid flickering
-    // Wait, no, we only draw when video updates.
-  }
-
-  requestAnimationFrame(renderLoop);
-}
-
-// ─── Render AR Overlay ─────────────────────────────────────
-function renderOverlay(ctx, vw, vh, landmarks) {
-  // Landmarks to extract coordinates
-  // MediaPipe coordinates are normalized [0, 1]. Multiply by canvas dimensions.
-  
-  // Nose tip
-  const nose = { x: landmarks[1].x * vw, y: landmarks[1].y * vh };
-  // Cheeks
-  const leftCheek = { x: landmarks[234].x * vw, y: landmarks[234].y * vh };
-  const rightCheek = { x: landmarks[454].x * vw, y: landmarks[454].y * vh };
-  // Eyes (for rotation)
-  const leftEyeOuter = { x: landmarks[33].x * vw, y: landmarks[33].y * vh };
-  const rightEyeOuter = { x: landmarks[263].x * vw, y: landmarks[263].y * vh };
-  
-  // Calculate face rotation (roll)
-  // MediaPipe un-mirrored: leftEyeOuter (actual left eye) is on the right side of the image.
-  // rightEyeOuter (actual right eye) is on the left side.
-  // To get an upright angle (~0 deg), we point from the left side of the image (rightEyeOuter) 
-  // to the right side of the image (leftEyeOuter).
-  const angle = Math.atan2(leftEyeOuter.y - rightEyeOuter.y, leftEyeOuter.x - rightEyeOuter.x);
-  
-  // Calculate scale based on interpupillary distance (IPD) which is extremely stable
-  const eyeDist = Math.sqrt(Math.pow(rightEyeOuter.x - leftEyeOuter.x, 2) + Math.pow(rightEyeOuter.y - leftEyeOuter.y, 2));
-
-  // The center of the glasses should be exactly between the eyes
-  const bridgeCenter = {
-    x: (leftEyeOuter.x + rightEyeOuter.x) / 2,
-    y: (leftEyeOuter.y + rightEyeOuter.y) / 2
-  };
-
-  switch (currentCategory) {
-    case 'eyewear':
-      // Dynamic scale: glasses frame width is ~1.6x the outer eye distance
-      const eyeScale = (eyeDist * 1.6 / (currentProduct.frameWidth || 280)) * baseScale;
-      // Draw centered on nose bridge
-      drawEyewear(ctx, bridgeCenter.x, bridgeCenter.y + userOffsetY, angle, eyeScale);
-      break;
-    case 'apparel':
-      renderFallback(ctx, vw, vh);
-      break;
-    case 'jewelry':
-      const jawBottom = { x: landmarks[152].x * vw, y: landmarks[152].y * vh };
-      const jewelScale = (eyeDist * 1.5 / 300) * baseScale;
-      // Choker vs necklace vs earrings
-      drawJewelry(ctx, bridgeCenter, jawBottom, leftCheek, rightCheek, angle, jewelScale, landmarks, vw, vh);
-      break;
-    case 'cosmetics':
-      drawCosmetics(ctx, landmarks, vw, vh);
-      break;
-  }
-}
-
-function renderFallback(ctx, vw, vh) {
-  const cx = vw / 2;
-  const cy = vh / 2 + (userOffsetY * (vh / 400));
-  
-  if (currentCategory === 'apparel') {
-    drawApparel(ctx, cx, cy + vh * 0.2, vw, vh, baseScale);
-  } else if (currentCategory === 'eyewear') {
-    drawEyewear(ctx, cx, cy - vh * 0.1, 0, baseScale * 0.5);
-  } else if (currentCategory === 'jewelry') {
-    // Just mock points for jewelry fallback
-    const jaw = {x: cx, y: cy + vh * 0.1};
-    const bridge = {x: cx, y: cy - vh * 0.1};
-    drawJewelry(ctx, bridge, jaw, {x: cx - vw*0.1, y: cy}, {x: cx + vw*0.1, y: cy}, 0, baseScale * 0.5, null, vw, vh);
-  }
-}
-
-// ─── EYEWEAR DRAWING ──────────────────────────────────────
-function drawEyewear(ctx, cx, cy, angle, scale) {
-  const p = currentProduct;
-  const baseW = (p.frameWidth || 280) * scale;
-  const baseH = baseW * 0.38;
-
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(angle);
-
-  const frameColor = p.color;
-  const lensW = baseW * 0.38;
-  const lensH = baseH * 0.85;
-  const bridgeW = baseW * 0.08;
-  const templeLen = baseW * 0.25;
-
-  switch (p.id) {
-    case 'classic':
-      drawRectLenses(ctx, lensW, lensH, bridgeW, frameColor, 8 * scale, scale);
-      break;
-    case 'aviator':
-      drawAviatorLenses(ctx, lensW * 1.05, lensH * 1.1, bridgeW, frameColor, scale);
-      break;
-    case 'round':
-      drawRoundLenses(ctx, lensH * 0.9, bridgeW, frameColor, scale);
-      break;
-    case 'cateye':
-      drawCatEyeLenses(ctx, lensW, lensH, bridgeW, frameColor, scale);
-      break;
-    case 'wayfarer':
-      drawRectLenses(ctx, lensW * 1.02, lensH * 1.05, bridgeW, frameColor, 4 * scale, scale);
-      break;
-    case 'oversized':
-      drawRoundLenses(ctx, lensH * 1.15, bridgeW * 0.8, frameColor, scale);
-      break;
-    default:
-      drawRectLenses(ctx, lensW, lensH, bridgeW, frameColor, 8 * scale, scale);
-  }
-
-  // Temples (arms)
-  ctx.strokeStyle = frameColor;
-  ctx.lineWidth = 4 * scale;
-  ctx.lineCap = 'round';
-
-  ctx.beginPath();
-  ctx.moveTo(-lensW - bridgeW / 2, -lensH * 0.2);
-  ctx.lineTo(-lensW - bridgeW / 2 - templeLen, -lensH * 0.3);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(lensW + bridgeW / 2, -lensH * 0.2);
-  ctx.lineTo(lensW + bridgeW / 2 + templeLen, -lensH * 0.3);
-  ctx.stroke();
-
-  ctx.restore();
-}
-
-function drawRectLenses(ctx, w, h, bridge, color, radius, scale) {
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 5 * scale;
-  roundRect(ctx, -w - bridge / 2, -h / 2, w, h, radius);
-  ctx.fill(); ctx.stroke();
-  roundRect(ctx, bridge / 2, -h / 2, w, h, radius);
-  ctx.fill(); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(-bridge / 2, -h * 0.1);
-  ctx.quadraticCurveTo(0, -h * 0.35, bridge / 2, -h * 0.1);
-  ctx.stroke();
-}
-
-function drawRoundLenses(ctx, r, bridge, color, scale) {
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 5 * scale;
-  ctx.beginPath(); ctx.arc(-r - bridge / 2, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.arc(r + bridge / 2, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(-bridge / 2, -r * 0.1);
-  ctx.quadraticCurveTo(0, -r * 0.5, bridge / 2, -r * 0.1);
-  ctx.stroke();
-}
-
-function drawAviatorLenses(ctx, w, h, bridge, color, scale) {
-  ctx.fillStyle = 'rgba(30,60,30,0.4)';
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 4 * scale;
-  
-  ctx.beginPath();
-  ctx.moveTo(-bridge / 2, -h * 0.3);
-  ctx.quadraticCurveTo(-w * 0.3 - bridge / 2, -h * 0.8, -w - bridge / 2, -h * 0.2);
-  ctx.quadraticCurveTo(-w * 1.1 - bridge / 2, h * 0.5, -w * 0.5 - bridge / 2, h * 0.6);
-  ctx.quadraticCurveTo(-bridge / 2, h * 0.5, -bridge / 2, -h * 0.3);
-  ctx.fill(); ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(bridge / 2, -h * 0.3);
-  ctx.quadraticCurveTo(w * 0.3 + bridge / 2, -h * 0.8, w + bridge / 2, -h * 0.2);
-  ctx.quadraticCurveTo(w * 1.1 + bridge / 2, h * 0.5, w * 0.5 + bridge / 2, h * 0.6);
-  ctx.quadraticCurveTo(bridge / 2, h * 0.5, bridge / 2, -h * 0.3);
-  ctx.fill(); ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(-bridge / 2, -h * 0.3);
-  ctx.quadraticCurveTo(0, -h * 0.6, bridge / 2, -h * 0.3);
-  ctx.stroke();
-}
-
-function drawCatEyeLenses(ctx, w, h, bridge, color, scale) {
-  ctx.fillStyle = 'rgba(40,10,30,0.4)';
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 5 * scale;
-  
-  ctx.beginPath();
-  ctx.moveTo(-bridge / 2, 0);
-  ctx.quadraticCurveTo(-bridge / 2, -h * 0.9, -w * 0.8 - bridge / 2, -h * 0.85);
-  ctx.lineTo(-w - bridge / 2, -h * 0.5);
-  ctx.quadraticCurveTo(-w * 1.05 - bridge / 2, h * 0.4, -w * 0.5 - bridge / 2, h * 0.5);
-  ctx.quadraticCurveTo(-bridge / 2, h * 0.4, -bridge / 2, 0);
-  ctx.fill(); ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(bridge / 2, 0);
-  ctx.quadraticCurveTo(bridge / 2, -h * 0.9, w * 0.8 + bridge / 2, -h * 0.85);
-  ctx.lineTo(w + bridge / 2, -h * 0.5);
-  ctx.quadraticCurveTo(w * 1.05 + bridge / 2, h * 0.4, w * 0.5 + bridge / 2, h * 0.5);
-  ctx.quadraticCurveTo(bridge / 2, h * 0.4, bridge / 2, 0);
-  ctx.fill(); ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(-bridge / 2, -h * 0.1);
-  ctx.quadraticCurveTo(0, -h * 0.4, bridge / 2, -h * 0.1);
-  ctx.stroke();
-}
-
-// ─── APPAREL DRAWING (Fallback) ───────────────────────────
-function drawApparel(ctx, cx, cy, vw, vh, scale) {
-  const p = currentProduct;
-  const w = vw * 0.55 * scale;
-  const h = vh * 0.5 * scale;
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.globalAlpha = 0.55;
-
-  ctx.fillStyle = p.color;
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-  ctx.lineWidth = 2;
-  
-  ctx.beginPath();
-  ctx.moveTo(-w * 0.12, -h * 0.5);
-  ctx.quadraticCurveTo(0, -h * 0.42, w * 0.12, -h * 0.5);
-  ctx.lineTo(w * 0.45, -h * 0.45);
-  ctx.lineTo(w * 0.48, -h * 0.18);
-  ctx.lineTo(w * 0.28, -h * 0.15);
-  ctx.lineTo(w * 0.25, h * 0.5);
-  ctx.lineTo(-w * 0.25, h * 0.5);
-  ctx.lineTo(-w * 0.28, -h * 0.15);
-  ctx.lineTo(-w * 0.48, -h * 0.18);
-  ctx.lineTo(-w * 0.45, -h * 0.45);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.restore();
-}
-
-// ─── JEWELRY DRAWING ──────────────────────────────────────
-function drawJewelry(ctx, bridge, jaw, leftCheek, rightCheek, angle, scale, landmarks, vw, vh) {
-  const p = currentProduct;
-  ctx.save();
-
-  if (p.id.includes('earring')) {
-    // Earrings anchor to the ears (tragus)
-    // Actually we use landmarks[234] and [454] which are on the cheek/ear line
-    const lEar = { x: landmarks[234].x * vw, y: landmarks[234].y * vh };
-    const rEar = { x: landmarks[454].x * vw, y: landmarks[454].y * vh };
-    
-    // Draw left earring
-    ctx.translate(lEar.x, lEar.y);
-    ctx.rotate(angle);
-    drawEarringPiece(ctx, p, scale);
-    ctx.restore();
-    ctx.save();
-    
-    // Draw right earring
-    ctx.translate(rEar.x, rEar.y);
-    ctx.rotate(angle);
-    drawEarringPiece(ctx, p, scale);
-    
-  } else {
-    // Necklaces anchor below the jaw
-    const neckY = jaw.y + (30 * scale) + userOffsetY;
-    ctx.translate(jaw.x, neckY);
-    ctx.rotate(angle);
-    
-    const w = Math.abs(rightCheek.x - leftCheek.x) * 0.8 * scale;
-    const drop = (p.id === 'choker') ? 15 * scale : 60 * scale;
-
-    ctx.strokeStyle = p.color;
-    ctx.lineWidth = (p.id === 'choker' ? 6 : 3) * scale;
-    ctx.lineCap = 'round';
-    ctx.shadowColor = p.color;
-    ctx.shadowBlur = 8;
-
-    ctx.beginPath();
-    ctx.moveTo(-w/2, -drop*0.5);
-    ctx.quadraticCurveTo(0, drop, w/2, -drop*0.5);
-    ctx.stroke();
-
-    if (p.id.includes('necklace')) {
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(0, drop * 0.75, 8 * scale, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  ctx.restore();
-}
-
-function drawEarringPiece(ctx, p, scale) {
-  ctx.fillStyle = p.color;
-  ctx.strokeStyle = p.color;
-  ctx.shadowColor = p.color;
-  
-  if (p.id === 'earring-stud') {
-    ctx.shadowBlur = 10;
-    ctx.beginPath();
-    ctx.arc(0, 0, 7 * scale, 0, Math.PI * 2);
-    ctx.fill();
-  } else {
-    ctx.lineWidth = 2 * scale;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, 30 * scale);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.moveTo(0, 30 * scale);
-    ctx.lineTo(-6 * scale, 42 * scale);
-    ctx.lineTo(0, 50 * scale);
-    ctx.lineTo(6 * scale, 42 * scale);
-    ctx.closePath();
-    ctx.fill();
-  }
-}
-
-// ─── COSMETICS DRAWING ────────────────────────────────────
-function drawCosmetics(ctx, landmarks, vw, vh) {
-  const p = currentProduct;
-  const lipColor = p.color;
-  
-  // Upper Lip Outline indices (MediaPipe Face Mesh): 61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291
-  const upperLipOuter = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291];
-  const upperLipInner = [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308];
-  const lowerLipOuter = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291];
-  const lowerLipInner = [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308];
-
-  ctx.save();
-  ctx.fillStyle = lipColor;
-  ctx.globalAlpha = 0.55; // Semi-transparent for realistic blend
-
-  // Draw Upper Lip
-  ctx.beginPath();
-  upperLipOuter.forEach((idx, i) => {
-    const pt = landmarks[idx];
-    if (i === 0) ctx.moveTo(pt.x * vw, pt.y * vh);
-    else ctx.lineTo(pt.x * vw, pt.y * vh);
-  });
-  // Connect inner backwards
-  for (let i = upperLipInner.length - 1; i >= 0; i--) {
-    const pt = landmarks[upperLipInner[i]];
-    ctx.lineTo(pt.x * vw, pt.y * vh);
-  }
-  ctx.closePath();
-  ctx.fill();
-
-  // Draw Lower Lip
-  ctx.beginPath();
-  lowerLipOuter.forEach((idx, i) => {
-    const pt = landmarks[idx];
-    if (i === 0) ctx.moveTo(pt.x * vw, pt.y * vh);
-    else ctx.lineTo(pt.x * vw, pt.y * vh);
-  });
-  // Connect inner backwards
-  for (let i = lowerLipInner.length - 1; i >= 0; i--) {
-    const pt = landmarks[lowerLipInner[i]];
-    ctx.lineTo(pt.x * vw, pt.y * vh);
-  }
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.restore();
-}
-
-// ─── UTILITY ───────────────────────────────────────────────
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
+  buildModel(product);
 }
 
 // ─── Product Thumbnails ────────────────────────────────────
@@ -638,14 +772,9 @@ function getProductThumbnail(product) {
   switch (currentCategory) {
     case 'eyewear':
       return `<svg viewBox="0 0 60 30" fill="none">
-        <rect x="2" y="5" width="22" height="18" rx="4" stroke="${product.color === '#8B4513' ? '#C07040' : 'rgba(255,255,255,0.6)'}" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
-        <rect x="36" y="5" width="22" height="18" rx="4" stroke="${product.color === '#8B4513' ? '#C07040' : 'rgba(255,255,255,0.6)'}" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
+        <rect x="2" y="5" width="22" height="18" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
+        <rect x="36" y="5" width="22" height="18" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
         <path d="M24 12 Q30 8 36 12" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/>
-      </svg>`;
-    case 'apparel':
-      return `<svg viewBox="0 0 50 50" fill="none">
-        <path d="M18 8L8 15v30h34V15L32 8H18z" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="${product.color}40"/>
-        <path d="M18 8l7 7 7-7" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
       </svg>`;
     case 'jewelry':
       if (product.id.includes('necklace') || product.id === 'choker') {
@@ -657,6 +786,11 @@ function getProductThumbnail(product) {
       return `<svg viewBox="0 0 50 50" fill="none">
         <circle cx="16" cy="25" r="5" fill="${product.color}" opacity="0.7"/>
         <circle cx="34" cy="25" r="5" fill="${product.color}" opacity="0.7"/>
+      </svg>`;
+    case 'apparel':
+      return `<svg viewBox="0 0 50 50" fill="none">
+        <path d="M18 8L8 15v30h34V15L32 8H18z" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="${product.color}40"/>
+        <path d="M18 8l7 7 7-7" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
       </svg>`;
     default:
       return `<svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="15" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/></svg>`;
@@ -674,18 +808,30 @@ function capturePhoto() {
   cc.width = cameraFeed.videoWidth;
   cc.height = cameraFeed.videoHeight;
 
+  // Draw mirrored webcam
   cctx.save();
   cctx.translate(cc.width, 0);
   cctx.scale(-1, 1);
   cctx.drawImage(cameraFeed, 0, 0);
   cctx.restore();
 
+  // Draw Three.js render on top
   cctx.save();
   cctx.translate(cc.width, 0);
   cctx.scale(-1, 1);
-  cctx.drawImage(arCanvas, 0, 0);
+  cctx.drawImage(renderer.domElement, 0, 0);
   cctx.restore();
 
+  // Draw cosmetics canvas if present
+  if (window._cosmeticsCanvas && currentCategory === 'cosmetics') {
+    cctx.save();
+    cctx.translate(cc.width, 0);
+    cctx.scale(-1, 1);
+    cctx.drawImage(window._cosmeticsCanvas, 0, 0);
+    cctx.restore();
+  }
+
+  // Watermark
   cctx.fillStyle = 'rgba(255,255,255,0.4)';
   cctx.font = '600 16px Outfit, sans-serif';
   cctx.textAlign = 'right';
@@ -693,10 +839,6 @@ function capturePhoto() {
 
   downloadBtn.href = cc.toDataURL('image/png');
   captureModal.style.display = 'flex';
-}
-
-function closeCaptureModal() {
-  captureModal.style.display = 'none';
 }
 
 // ─── Start ─────────────────────────────────────────────────

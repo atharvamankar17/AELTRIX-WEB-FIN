@@ -11,9 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="tryon.css" />
-  
-  <!-- MediaPipe Tasks Vision -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js" crossorigin="anonymous"></script>
+
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body class="tryon-body">
 
@@ -49,15 +50,13 @@
     <!-- Camera viewport -->
     <div class="tryon-viewport" id="tryon-viewport" style="display:none;">
       <video id="camera-feed" autoplay playsinline muted></video>
+      <!-- Three.js renders on this canvas with transparent background -->
       <canvas id="ar-canvas"></canvas>
-      <!-- Face guide (eyewear/cosmetics) -->
-      <div class="face-guide" id="face-guide" style="display:none;">
-        <svg viewBox="0 0 300 400" fill="none">
-          <ellipse cx="150" cy="180" rx="110" ry="140" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="8 6"/>
-        </svg>
+      <!-- Loading indicator for 3D engine -->
+      <div class="ar-loading" id="ar-loading" style="display:none;">
+        <div class="ar-loading-spinner"></div>
+        <p>Loading 3D Engine...</p>
       </div>
-      <!-- AR overlay container for products -->
-      <div class="ar-overlay" id="ar-overlay"></div>
       <!-- Capture flash -->
       <div class="capture-flash" id="capture-flash"></div>
     </div>
