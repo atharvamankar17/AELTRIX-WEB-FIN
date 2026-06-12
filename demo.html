@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Try-On Hub — AELTRIX | Virtual Try-On Demos</title>
+  <meta name="description" content="Experience AELTRIX AR virtual try-on. Try on eyewear, apparel, jewelry, and cosmetics using your camera — zero downloads required." />
+  <meta name="theme-color" content="#030305" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="gradient-bg" aria-hidden="true">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="gradient-orb orb-4"></div>
+    <div class="gradient-orb orb-5"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="nav-logo">AELTRIX</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#solutions">Solutions</a></li>
+        <li><a href="index.html#technology">Technology</a></li>
+        <li><a href="index.html#industries">Industries</a></li>
+        <li><a href="index.html#metrics">Results</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <a href="demo.html" class="nav-cta nav-active" id="nav-cta-btn">Launch Demo</a>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TRY-ON HUB HERO                                 -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="demo-hero" id="demo-hero">
+    <div class="container">
+      <div class="demo-hero-badge reveal-up">
+        <span class="badge-dot"></span>
+        TRY-ON HUB
+      </div>
+      <h1 class="demo-hero-title reveal-up">What would you like<br /><span class="demo-hero-italic">to try on today?</span></h1>
+      <p class="demo-hero-sub reveal-up">Select a category. Turn on your camera. See yourself in it.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CATEGORY CARDS                                  -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="demo-categories" id="demo-categories">
+    <div class="container">
+      <div class="demo-grid">
+
+        <a href="tryon.html?category=eyewear" class="demo-card reveal-up" id="demo-card-eyewear">
+          <div class="demo-card-image">
+            <img src="assets/eyewear.png" alt="Eyewear virtual try-on" loading="lazy" />
+            <div class="demo-card-overlay"></div>
+          </div>
+          <div class="demo-card-info">
+            <div class="demo-card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><path d="M4 24c0-5 4-10 10-10s8 4 10 10c2-6 4-10 10-10s10 5 10 10-4 10-10 10-8-4-10-10c-2 6-4 10-10 10S4 29 4 24z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="demo-card-text">
+              <h3>Eyewear</h3>
+              <p>Try frames on your face — instantly.</p>
+            </div>
+            <div class="demo-card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <a href="tryon.html?category=apparel" class="demo-card reveal-up" id="demo-card-apparel">
+          <div class="demo-card-image">
+            <img src="assets/apparel.png" alt="Apparel virtual try-on" loading="lazy" />
+            <div class="demo-card-overlay"></div>
+          </div>
+          <div class="demo-card-info">
+            <div class="demo-card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><path d="M16 6L6 14v28h36V14L32 6H16z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6l8 8 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="demo-card-text">
+              <h3>Apparel</h3>
+              <p>Wear it before you own it.</p>
+            </div>
+            <div class="demo-card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <a href="tryon.html?category=jewelry" class="demo-card reveal-up" id="demo-card-jewelry">
+          <div class="demo-card-image">
+            <img src="assets/jewelry.png" alt="Jewelry virtual try-on" loading="lazy" />
+            <div class="demo-card-overlay"></div>
+          </div>
+          <div class="demo-card-info">
+            <div class="demo-card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><path d="M24 4l-8 12h16L24 4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="30" r="14" stroke="currentColor" stroke-width="1.5"/><path d="M16 16l8 28 8-28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="demo-card-text">
+              <h3>Jewelry</h3>
+              <p>See the sparkle — before the purchase.</p>
+            </div>
+            <div class="demo-card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <a href="tryon.html?category=cosmetics" class="demo-card reveal-up" id="demo-card-cosmetics">
+          <div class="demo-card-image">
+            <img src="assets/cosmetics.png" alt="Cosmetics virtual try-on" loading="lazy" />
+            <div class="demo-card-overlay"></div>
+          </div>
+          <div class="demo-card-info">
+            <div class="demo-card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><rect x="18" y="4" width="12" height="40" rx="6" stroke="currentColor" stroke-width="1.5"/><path d="M18 16h12M18 32h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="demo-card-text">
+              <h3>Cosmetics</h3>
+              <p>Your shade, seen instantly.</p>
+            </div>
+            <div class="demo-card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p>&copy; 2026 AELTRIX. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

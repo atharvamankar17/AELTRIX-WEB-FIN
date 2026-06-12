@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AELTRIX — Beyond. Reality. | Enterprise AR Virtual Try-On Platform</title>
+  <meta name="description" content="AELTRIX delivers zero-lag AR virtual try-on solutions for eyewear, clothing, jewelry, and more. Enterprise-grade immersion that converts browsers into buyers." />
+  <meta name="keywords" content="AR, augmented reality, virtual try-on, eyewear, jewelry, clothing, enterprise, B2B" />
+  <meta name="theme-color" content="#030305" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- FLUID GRADIENT BACKGROUND                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="gradient-bg" aria-hidden="true">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="gradient-orb orb-4"></div>
+    <div class="gradient-orb orb-5"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- NAVIGATION                                      -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="nav-logo">AELTRIX</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#metrics">Results</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="demo.html" class="nav-cta" id="nav-cta-btn">Launch Demo</a>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- HERO — SCROLL TRACK                             -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="hero-scroll-track" id="hero">
+    <div class="hero-sticky">
+      <div class="hero-content">
+        <h1 class="hero-title" id="hero-title">AELTRIX</h1>
+        <p class="hero-tagline" id="hero-tagline">Beyond. Reality.</p>
+      </div>
+      <div class="hero-sub-content" id="hero-sub-content">
+        <p class="hero-description">Enterprise-grade AR virtual try&#8209;on that converts browsers into buyers — zero&nbsp;lag, infinite&nbsp;possibility.</p>
+        <div class="hero-actions">
+          <a href="demo.html" class="btn btn-primary" id="hero-cta-primary">Launch Demo</a>
+          <a href="#" class="btn btn-outline" id="hero-cta-secondary" data-demo-trigger>Request a Quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TRUSTED BY (Logo Bar)                           -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="trusted-section" id="trusted">
+    <div class="container">
+      <p class="section-label reveal-up">TRUSTED BY INDUSTRY LEADERS</p>
+      <div class="logo-strip reveal-up">
+        <div class="logo-placeholder">Luxottica</div>
+        <div class="logo-placeholder">Cartier</div>
+        <div class="logo-placeholder">Warby Parker</div>
+        <div class="logo-placeholder">Tiffany & Co.</div>
+        <div class="logo-placeholder">Ray-Ban</div>
+        <div class="logo-placeholder">Prada</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SOLUTIONS                                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section solutions-section" id="solutions">
+    <div class="container">
+      <p class="section-label reveal-up">WHAT WE DO</p>
+      <h2 class="section-heading reveal-up">Immersive Commerce,<br />Reimagined.</h2>
+      <p class="section-subtext reveal-up">AELTRIX's AR engine renders photorealistic overlays in real time — transforming how customers experience products before they buy.</p>
+
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <a href="tryon.html?category=eyewear" class="glass-card reveal-up" id="solution-eyewear" style="text-decoration:none; display:flex; flex-direction:column; align-items:flex-start;">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 24c0-5 4-10 10-10s8 4 10 10c2-6 4-10 10-10s10 5 10 10-4 10-10 10-8-4-10-10c-2 6-4 10-10 10S4 29 4 24z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="card-title">Eyewear Try-On</h3>
+          <p class="card-text" style="flex:1;">Real-time facial mapping renders frames with sub-millimeter accuracy. Customers see exactly how every pair fits — lighting, shadow, and reflection included.</p>
+          <div class="demo-link" style="margin-top:20px; font-size:0.875rem; font-weight:500; color:var(--accent-cyan); display:flex; align-items:center; gap:8px;">Try it live <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="tryon.html?category=apparel" class="glass-card reveal-up" id="solution-apparel" style="text-decoration:none; display:flex; flex-direction:column; align-items:flex-start;">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 6L6 14v28h36V14L32 6H16z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6l8 8 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="card-title">Apparel Visualization</h3>
+          <p class="card-text" style="flex:1;">Full-body AR draping with real-time fabric physics. See how garments move, fold, and fit — before a single stitch is shipped.</p>
+          <div class="demo-link" style="margin-top:20px; font-size:0.875rem; font-weight:500; color:var(--accent-cyan); display:flex; align-items:center; gap:8px;">Try it live <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="tryon.html?category=jewelry" class="glass-card reveal-up" id="solution-jewelry" style="text-decoration:none; display:flex; flex-direction:column; align-items:flex-start;">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4l-8 12h16L24 4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="30" r="14" stroke="currentColor" stroke-width="1.5"/><path d="M16 16l8 28 8-28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="card-title">Jewelry &amp; Watches</h3>
+          <p class="card-text" style="flex:1;">Photorealistic metal and gemstone rendering with dynamic light refraction. Every facet, every gleam — indistinguishable from the real thing.</p>
+          <div class="demo-link" style="margin-top:20px; font-size:0.875rem; font-weight:500; color:var(--accent-cyan); display:flex; align-items:center; gap:8px;">Try it live <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="tryon.html?category=cosmetics" class="glass-card reveal-up" id="solution-cosmetics" style="text-decoration:none; display:flex; flex-direction:column; align-items:flex-start;">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="4" width="12" height="40" rx="6" stroke="currentColor" stroke-width="1.5"/><path d="M18 16h12M18 32h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="card-title">Cosmetics &amp; Beauty</h3>
+          <p class="card-text" style="flex:1;">Skin-tone adaptive color matching for lipstick, foundation, and eyeshadow. AR that understands undertones, not just overlays.</p>
+          <div class="demo-link" style="margin-top:20px; font-size:0.875rem; font-weight:500; color:var(--accent-cyan); display:flex; align-items:center; gap:8px;">Try it live <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TECHNOLOGY                                      -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section tech-section" id="technology">
+    <div class="container">
+      <p class="section-label reveal-up">THE ENGINE</p>
+      <h2 class="section-heading reveal-up">Built for Speed.<br />Designed for Scale.</h2>
+      <p class="section-subtext reveal-up">Our proprietary rendering pipeline processes spatial data at 120fps, delivering photorealistic AR with imperceptible latency across any device.</p>
+
+      <div class="tech-grid">
+        <div class="tech-feature reveal-up" id="tech-latency">
+          <div class="tech-number">&lt; 8ms</div>
+          <h3 class="tech-title">Render Latency</h3>
+          <p class="tech-desc">Frame-level rendering that matches native camera feed speed. Zero perceptible delay between movement and overlay.</p>
+        </div>
+        <div class="tech-feature reveal-up" id="tech-accuracy">
+          <div class="tech-number">0.3mm</div>
+          <h3 class="tech-title">Spatial Accuracy</h3>
+          <p class="tech-desc">Sub-millimeter landmark detection across 468 facial points and full-body pose estimation with cloth simulation.</p>
+        </div>
+        <div class="tech-feature reveal-up" id="tech-integration">
+          <div class="tech-number">3 Ln</div>
+          <h3 class="tech-title">Integration</h3>
+          <p class="tech-desc">Drop our SDK into any e-commerce stack. Three lines of code. Full AR try-on. No infrastructure changes required.</p>
+        </div>
+        <div class="tech-feature reveal-up" id="tech-devices">
+          <div class="tech-number">99.2%</div>
+          <h3 class="tech-title">Device Coverage</h3>
+          <p class="tech-desc">WebAR-first architecture runs on any modern browser. No app downloads. No plugins. Just point, try, and buy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- INDUSTRIES                                      -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section industries-section" id="industries">
+    <div class="container">
+      <p class="section-label reveal-up">WHO WE SERVE</p>
+      <h2 class="section-heading reveal-up">Tailored for Every<br />Vertical.</h2>
+
+      <div class="industries-grid">
+        <div class="industry-card reveal-up" id="industry-luxury">
+          <span class="industry-tag">Luxury Retail</span>
+          <h3>Maison-Level Experiences</h3>
+          <p>White-glove AR for haute couture, fine jewelry, and prestige eyewear — calibrated for brand exacting standards.</p>
+        </div>
+        <div class="industry-card reveal-up" id="industry-dtc">
+          <span class="industry-tag">DTC Brands</span>
+          <h3>Convert at Scale</h3>
+          <p>Plug-and-play AR modules purpose-built for Shopify, Magento, and headless commerce architectures.</p>
+        </div>
+        <div class="industry-card reveal-up" id="industry-enterprise">
+          <span class="industry-tag">Enterprise</span>
+          <h3>Global Deployment</h3>
+          <p>Multi-region CDN, SSO integration, and custom SLA tiers for organizations managing 10,000+ SKUs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- METRICS                                         -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section metrics-section" id="metrics">
+    <div class="container">
+      <p class="section-label reveal-up">THE RESULTS</p>
+      <h2 class="section-heading reveal-up">Numbers That<br />Move Boardrooms.</h2>
+
+      <div class="metrics-grid">
+        <div class="metric-item reveal-up" id="metric-conversion">
+          <span class="metric-value" data-target="94">0</span><span class="metric-unit">%</span>
+          <p class="metric-label">Higher conversion rate vs. standard product pages</p>
+        </div>
+        <div class="metric-item reveal-up" id="metric-returns">
+          <span class="metric-value" data-target="58">0</span><span class="metric-unit">%</span>
+          <p class="metric-label">Reduction in product returns</p>
+        </div>
+        <div class="metric-item reveal-up" id="metric-engagement">
+          <span class="metric-value" data-target="3.2">0</span><span class="metric-unit">x</span>
+          <p class="metric-label">Longer average session duration</p>
+        </div>
+        <div class="metric-item reveal-up" id="metric-nps">
+          <span class="metric-value" data-target="72">0</span><span class="metric-unit">pts</span>
+          <p class="metric-label">Average NPS lift after AR integration</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- HOW IT WORKS                                    -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section workflow-section" id="workflow">
+    <div class="container">
+      <p class="section-label reveal-up">HOW IT WORKS</p>
+      <h2 class="section-heading reveal-up">From Integration<br />to Conversion in Days.</h2>
+
+      <div class="workflow-steps">
+        <div class="workflow-step reveal-up" id="step-1">
+          <div class="step-number">01</div>
+          <h3>Integrate</h3>
+          <p>Drop our lightweight SDK into your existing e-commerce platform. Three lines of code — no re-architecture needed.</p>
+        </div>
+        <div class="workflow-connector reveal-up"></div>
+        <div class="workflow-step reveal-up" id="step-2">
+          <div class="step-number">02</div>
+          <h3>Upload</h3>
+          <p>Import your 3D product models or let our pipeline generate photorealistic assets from standard product photography.</p>
+        </div>
+        <div class="workflow-connector reveal-up"></div>
+        <div class="workflow-step reveal-up" id="step-3">
+          <div class="step-number">03</div>
+          <h3>Launch</h3>
+          <p>Go live with browser-native AR try-on. No app installs. Real-time analytics dashboard from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TESTIMONIAL                                     -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section testimonial-section" id="testimonial">
+    <div class="container">
+      <div class="testimonial-card reveal-up">
+        <blockquote>
+          <p>"AELTRIX didn't just improve our try-on experience — it fundamentally changed how our customers discover products. Returns dropped by 41% in the first quarter."</p>
+        </blockquote>
+        <div class="testimonial-author">
+          <div class="author-info">
+            <strong>Isabelle Fontaine</strong>
+            <span>VP of Digital Commerce, Maison Lumière</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CTA / CONTACT                                   -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section cta-section" id="contact">
+    <div class="container">
+      <div class="cta-content reveal-up">
+        <p class="section-label">GET STARTED</p>
+        <h2 class="section-heading">Ready to Redefine<br />the Try-On?</h2>
+        <p class="section-subtext">Book a personalized demo with our solutions team. See AELTRIX in action on your product catalog — in under 15 minutes.</p>
+        <div class="cta-actions">
+          <a href="#" class="btn btn-primary btn-lg" id="cta-demo-btn" data-demo-trigger>Schedule a Demo</a>
+          <a href="#" class="btn btn-outline btn-lg" id="cta-sales-btn" data-demo-trigger data-demo-type="sales">Talk to Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- FOOTER                                          -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <footer class="site-footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">AELTRIX</a>
+          <p class="footer-tagline">Beyond. Reality.</p>
+          <p class="footer-desc">Enterprise-grade AR virtual try-on solutions for the world's most discerning brands.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#technology">Technology</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#contact">Pricing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html">Careers</a></li>
+            <li><a href="#testimonial">Press</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#technology">Documentation</a></li>
+            <li><a href="#technology">API Reference</a></li>
+            <li><a href="#metrics">Case Studies</a></li>
+            <li><a href="#contact">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 AELTRIX. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- DEMO REQUEST MODAL                              -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="demo-modal-overlay">
+    <div class="modal-container" id="demo-modal">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal-header">
+        <p class="section-label">GET STARTED</p>
+        <h2 class="modal-title" id="modal-title">Schedule a Demo</h2>
+        <p class="modal-subtitle">See AELTRIX in action on your product catalog — in under 15 minutes.</p>
+      </div>
+      <form class="modal-form" id="demo-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="demo-name">Full Name</label>
+            <input type="text" id="demo-name" name="name" placeholder="Jane Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="demo-email">Work Email</label>
+            <input type="email" id="demo-email" name="email" placeholder="jane@company.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="demo-company">Company</label>
+            <input type="text" id="demo-company" name="company" placeholder="Acme Inc." required />
+          </div>
+          <div class="form-group">
+            <label for="demo-role">Role</label>
+            <input type="text" id="demo-role" name="role" placeholder="VP of E-Commerce" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="demo-interest">What interests you most?</label>
+          <select id="demo-interest" name="interest">
+            <option value="" disabled selected>Select an option</option>
+            <option value="eyewear">Eyewear Try-On</option>
+            <option value="apparel">Apparel Visualization</option>
+            <option value="jewelry">Jewelry & Watches</option>
+            <option value="cosmetics">Cosmetics & Beauty</option>
+            <option value="custom">Custom Solution</option>
+            <option value="general">General Demo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="demo-message">Message <span class="optional">(optional)</span></label>
+          <textarea id="demo-message" name="message" rows="3" placeholder="Tell us about your use case..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="demo-submit">Submit Request</button>
+      </form>
+      <div class="modal-success" id="modal-success">
+        <div class="success-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="20"/><path d="M14 24l6 6 14-14"/></svg>
+        </div>
+        <h3>Request Submitted!</h3>
+        <p>Our solutions team will reach out within 24 hours to schedule your personalized demo.</p>
+        <button type="button" class="btn btn-outline" id="modal-done">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
