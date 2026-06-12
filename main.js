@@ -168,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
         span.textContent = char;
         span.style.display = 'inline-block';
         span.style.opacity = '0';
-        span.style.filter = 'blur(10px)';
         span.style.transform = 'translateY(20px)';
         heroTitle.appendChild(span);
       });
@@ -179,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
       heroEntrance
         .to(heroTitle.children, {
           opacity: 1,
-          filter: 'blur(0px)',
           y: 0,
           duration: 0.8,
           stagger: 0.08,
@@ -188,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Fade in tagline
         .to(heroTagline, {
           opacity: 1,
-          filter: 'blur(0px)',
           duration: 0.7,
           ease: 'power3.out'
         }, '-=0.4')

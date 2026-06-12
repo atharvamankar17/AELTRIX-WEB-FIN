@@ -339,7 +339,6 @@ img { max-width: 100%; display: block; }
   color: var(--text-secondary);
   margin-top: var(--space-md);
   opacity: 0;
-  filter: blur(10px);
 }
 
 .hero-sub-content {
@@ -1698,5 +1697,14 @@ img { max-width: 100%; display: block; }
   .hero-actions .btn {
     width: 100%;
     max-width: 280px;
+  }
+}
+
+/* ── Mobile Performance Fixes ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gradient-orb {
+    filter: blur(40px) !important;
+    animation: none !important;
+    transform: scale(0.6);
   }
 }
