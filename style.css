@@ -209,12 +209,17 @@ img { max-width: 100%; display: block; }
 }
 
 .nav-logo {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  font-size: 1.35rem;
-  letter-spacing: 0.12em;
-  color: var(--text-primary);
+  display: flex;
+  align-items: center;
   transition: opacity var(--transition-fast);
+  text-decoration: none;
+}
+
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .nav-logo:hover { opacity: 0.8; }
@@ -1707,4 +1712,12 @@ img { max-width: 100%; display: block; }
     animation: none !important;
     transform: scale(0.6);
   }
+}
+
+/* ── Footer Logo Image ─────────────────────────────────────────────────── */
+.footer-logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
 }
