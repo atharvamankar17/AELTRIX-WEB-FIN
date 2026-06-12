@@ -18,8 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const heroTitle = document.getElementById('hero-title');
     const heroTagline = document.getElementById('hero-tagline');
+    const heroSubContent = document.getElementById('hero-sub-content');
     if (heroTitle) { heroTitle.style.opacity = '1'; heroTitle.style.filter = 'none'; }
     if (heroTagline) { heroTagline.style.opacity = '1'; heroTagline.style.filter = 'none'; }
+    if (heroSubContent) { heroSubContent.style.opacity = '1'; }
   }
 
   if (hasGSAP) {
