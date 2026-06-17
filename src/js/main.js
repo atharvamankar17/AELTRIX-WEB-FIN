@@ -1,5 +1,5 @@
 /* ============================================================
-   AELTRIX — Main JavaScript
+   AELTRIX - Main JavaScript
    GSAP-powered cinematic animations & interactions
    ============================================================ */
 
@@ -336,15 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const navHeight = navbar ? navbar.offsetHeight : 72;
       const targetPos = targetEl.getBoundingClientRect().top + window.scrollY - navHeight;
 
-      if (hasGSAP) {
-        gsap.to(window, {
-          scrollTo: { y: targetPos, autoKill: true },
-          duration: 1,
-          ease: 'power3.inOut'
-        });
-      } else {
-        window.scrollTo({ top: targetPos, behavior: 'smooth' });
-      }
+      // We use native smooth scrolling which works well in modern browsers
+      // without needing the extra GSAP ScrollToPlugin
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
     });
   });
 

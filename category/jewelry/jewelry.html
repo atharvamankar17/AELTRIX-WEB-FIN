@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ======================================================= -->
+  <!-- AELTRIX: Jewelry Virtual Try-On -->
+  <!-- ======================================================= -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virtual Try-On — AELTRIX</title>
-  <meta name="description" content="Try on products virtually with your camera. Powered by AELTRIX AR engine." />
+  <title>Jewelry Virtual Try-On - AELTRIX</title>
+  <meta name="description" content="Jewelry Virtual Try-On powered by AELTRIX AR engine." />
   <meta name="theme-color" content="#030305" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="tryon.css" />
+  <link rel="stylesheet" href="/src/css/style.css" />
+  <link rel="stylesheet" href="./jewelry.css" />
 
   <!-- Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -20,13 +23,13 @@
 
   <!-- Top Bar -->
   <header class="tryon-header" id="tryon-header">
-    <a href="demo.html" class="tryon-back" id="tryon-back">
+    <a href="/pages/demo.html" class="tryon-back" id="tryon-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Back
     </a>
     <div class="tryon-title-bar">
-      <a href="index.html" class="tryon-logo"><img src="./assets/logo.jpg" alt="AELTRIX XR" class="nav-logo-img" /></a>
-      <span class="tryon-category-label" id="tryon-category-label">Eyewear Try-On</span>
+      <a href="/index.html" class="tryon-logo"><img src="/assets/logo.jpg" alt="AELTRIX XR" class="nav-logo-img" /></a>
+      <span class="tryon-category-label" id="tryon-category-label">Jewelry Try-On</span>
     </div>
     <button class="tryon-capture-btn" id="capture-btn" title="Capture screenshot">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="4"/><path d="M5 7h2l2-3h6l2 3h2a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z"/></svg>
@@ -42,7 +45,7 @@
           <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="48" height="36" rx="4"/><circle cx="32" cy="32" r="10"/><circle cx="32" cy="32" r="4"/><circle cx="48" cy="20" r="2" fill="currentColor"/></svg>
         </div>
         <h2>Camera Access Required</h2>
-        <p>We need your camera to show the virtual try-on. No data is stored — everything runs locally in your browser.</p>
+        <p>We need your camera to show the virtual try-on. No data is stored - everything runs locally in your browser.</p>
         <button class="btn btn-primary btn-lg" id="enable-camera-btn">Enable Camera</button>
       </div>
     </div>
@@ -108,6 +111,6 @@
     </div>
   </div>
 
-  <script type="module" src="tryon.js"></script>
+  <script type="module" src="./jewelry.js"></script>
 </body>
 </html>

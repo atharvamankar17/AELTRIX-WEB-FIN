@@ -1,7 +1,7 @@
 import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs";
 
 /* ============================================================
-   AELTRIX — 3D AR Try-On Engine
+   AELTRIX - 3D AR Try-On Engine
    Three.js + MediaPipe Face Landmarker
    ============================================================ */
 
@@ -96,6 +96,10 @@ const sizeSlider = document.getElementById('size-slider');
 const positionSlider = document.getElementById('position-slider');
 
 // ─── Three.js Setup ────────────────────────────────────────
+/**
+ * Initializes the Three.js scene, camera, and renderer.
+ * Sets up the WebGL environment and lighting for AR overlays.
+ */
 function initThreeJS() {
   scene = new THREE.Scene();
 
@@ -278,123 +282,23 @@ function buildEyewear(product) {
   return group;
 }
 
-function buildNecklace(product) {
-  const group = new THREE.Group();
-  const color = new THREE.Color(product.color);
-  const mat = new THREE.MeshStandardMaterial({
-    color,
-    metalness: product.metalness || 0.9,
-    roughness: 0.15,
-  });
-
-  const isChoker = product.id === 'choker';
-  const chainWidth = isChoker ? 0.12 : 0.15;
-  const chainDrop = isChoker ? 0.02 : 0.06;
-  const tubeR = isChoker ? 0.004 : 0.002;
-
-  // Chain curve
-  const curve = new THREE.QuadraticBezierCurve3(
-    new THREE.Vector3(-chainWidth, 0, 0),
-    new THREE.Vector3(0, chainDrop, 0.01),
-    new THREE.Vector3(chainWidth, 0, 0)
-  );
-  const chainGeo = new THREE.TubeGeometry(curve, 32, tubeR, 8, false);
-  group.add(new THREE.Mesh(chainGeo, mat));
-
-  // Pendant for necklaces
-  if (product.id.includes('necklace')) {
-    const pendantGeo = new THREE.SphereGeometry(0.008, 16, 16);
-    const pendant = new THREE.Mesh(pendantGeo, mat);
-    pendant.position.set(0, chainDrop * 0.85, 0.01);
-    group.add(pendant);
-
-    // Add a tiny diamond shape
-    const diamondGeo = new THREE.OctahedronGeometry(0.005, 0);
-    const diamondMat = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      metalness: 0.0,
-      roughness: 0.0,
-      transmission: 0.8,
-      ior: 2.4,
-    });
-    const diamond = new THREE.Mesh(diamondGeo, diamondMat);
-    diamond.position.set(0, chainDrop * 0.85 + 0.012, 0.01);
-    group.add(diamond);
-  }
-
-  return group;
-}
-
-function buildEarrings(product) {
-  const group = new THREE.Group();
-  const color = new THREE.Color(product.color);
-  const mat = new THREE.MeshStandardMaterial({
-    color,
-    metalness: product.metalness || 0.9,
-    roughness: 0.15,
-  });
-
-  if (product.id === 'earring-stud') {
-    // Left stud
-    const leftStud = new THREE.Mesh(new THREE.SphereGeometry(0.006, 16, 16), mat);
-    leftStud.name = 'leftEarring';
-    group.add(leftStud);
-
-    // Right stud
-    const rightStud = new THREE.Mesh(new THREE.SphereGeometry(0.006, 16, 16), mat);
-    rightStud.name = 'rightEarring';
-    group.add(rightStud);
-  } else {
-    // Drop earrings
-    // Left
-    const leftGroup = new THREE.Group();
-    leftGroup.name = 'leftEarring';
-    const hookCurve = new THREE.QuadraticBezierCurve3(
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0.003, 0.015, 0),
-      new THREE.Vector3(0, 0.03, 0)
-    );
-    leftGroup.add(new THREE.Mesh(new THREE.TubeGeometry(hookCurve, 8, 0.001, 6), mat));
-    const dropGeo = new THREE.OctahedronGeometry(0.006, 0);
-    const drop = new THREE.Mesh(dropGeo, mat);
-    drop.position.y = 0.038;
-    leftGroup.add(drop);
-    group.add(leftGroup);
-
-    // Right
-    const rightGroup = leftGroup.clone();
-    rightGroup.name = 'rightEarring';
-    group.add(rightGroup);
-  }
-
-  return group;
-}
-
 // ─── Build 3D Model for Current Product ───────────────────
 function buildModel(product) {
   if (currentModel) {
     scene.remove(currentModel);
     currentModel = null;
   }
-
   let model;
-  if (currentCategory === 'eyewear') {
-    model = buildEyewear(product);
-  } else if (currentCategory === 'jewelry') {
-    if (product.id.includes('earring')) {
-      model = buildEarrings(product);
-    } else {
-      model = buildNecklace(product);
-    }
-  }
-
-  if (model) {
-    scene.add(model);
-    currentModel = model;
-  }
+  model = buildEyewear(product);
+  if (model) { scene.add(model); currentModel = model; }
 }
 
 // ─── Landmark → 3D Position Mapping ───────────────────────
+/**
+ * Converts MediaPipe 2D normalized face landmarks into 3D space coordinates.
+ * @param {Object} landmark - A single MediaPipe landmark {x, y, z}.
+ * @returns {THREE.Vector3} The mapped 3D vector.
+ */
 function landmarkTo3D(landmark) {
   // MediaPipe landmarks are normalized [0,1]. Convert to Three.js coords:
   // x: 0→1 maps to -0.5→+0.5 (but mirrored for selfie)
@@ -407,6 +311,12 @@ function landmarkTo3D(landmark) {
   );
 }
 
+/**
+ * Calculates head pitch, yaw, and roll based on specific facial landmarks.
+ * Uses trigonometry on eye corners and nose tip to estimate rotation.
+ * @param {Array} landmarks - The array of face landmarks.
+ * @returns {Object} An object containing {roll, yaw, pitch} in radians.
+ */
 function getHeadRotation(landmarks) {
   // Use eye corners + nose to compute head rotation
   const leftEye = landmarkTo3D(landmarks[33]);
@@ -434,6 +344,10 @@ function getHeadRotation(landmarks) {
 }
 
 // ─── Render Loop ──────────────────────────────────────────
+/**
+ * The main rendering loop. Constantly updates the camera feed and 
+ * runs the face landmark detection on every frame if active.
+ */
 function renderLoop() {
   if (!faceLandmarker || !currentProduct) {
     renderer.render(scene, camera);
@@ -464,6 +378,10 @@ function renderLoop() {
   requestAnimationFrame(renderLoop);
 }
 
+/**
+ * Updates the 3D model's position, scale, and rotation based on facial landmarks.
+ * @param {Array} landmarks - The array of face landmarks.
+ */
 function updateModelPosition(landmarks) {
   if (!currentModel) return;
 
@@ -530,75 +448,12 @@ function updateModelPosition(landmarks) {
   }
 }
 
-// ─── Cosmetics (2D lip overlay — stays on canvas) ─────────
-function renderCosmetics(landmarks) {
-  if (currentCategory !== 'cosmetics' || !currentProduct) return;
-
-  const vw = arCanvas.width;
-  const vh = arCanvas.height;
-
-  // Get a 2D context on top of Three.js
-  // We'll use an offscreen canvas for cosmetics
-  if (!window._cosmeticsCanvas) {
-    window._cosmeticsCanvas = document.createElement('canvas');
-    window._cosmeticsCanvas.style.cssText = arCanvas.style.cssText;
-    window._cosmeticsCanvas.style.position = 'absolute';
-    window._cosmeticsCanvas.style.top = '0';
-    window._cosmeticsCanvas.style.left = '0';
-    window._cosmeticsCanvas.style.width = '100%';
-    window._cosmeticsCanvas.style.height = '100%';
-    window._cosmeticsCanvas.style.pointerEvents = 'none';
-    window._cosmeticsCanvas.style.zIndex = '3';
-    viewport.appendChild(window._cosmeticsCanvas);
-  }
-
-  const cc = window._cosmeticsCanvas;
-  cc.width = vw;
-  cc.height = vh;
-  const ctx = cc.getContext('2d');
-  ctx.clearRect(0, 0, vw, vh);
-
-  const lipColor = currentProduct.color;
-  const upperLipOuter = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291];
-  const upperLipInner = [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308];
-  const lowerLipOuter = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291];
-  const lowerLipInner = [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308];
-
-  ctx.save();
-  ctx.fillStyle = lipColor;
-  ctx.globalAlpha = 0.55;
-
-  // Upper lip
-  ctx.beginPath();
-  upperLipOuter.forEach((idx, i) => {
-    const pt = landmarks[idx];
-    if (i === 0) ctx.moveTo(pt.x * vw, pt.y * vh);
-    else ctx.lineTo(pt.x * vw, pt.y * vh);
-  });
-  for (let i = upperLipInner.length - 1; i >= 0; i--) {
-    const pt = landmarks[upperLipInner[i]];
-    ctx.lineTo(pt.x * vw, pt.y * vh);
-  }
-  ctx.closePath();
-  ctx.fill();
-
-  // Lower lip
-  ctx.beginPath();
-  lowerLipOuter.forEach((idx, i) => {
-    const pt = landmarks[idx];
-    if (i === 0) ctx.moveTo(pt.x * vw, pt.y * vh);
-    else ctx.lineTo(pt.x * vw, pt.y * vh);
-  });
-  for (let i = lowerLipInner.length - 1; i >= 0; i--) {
-    const pt = landmarks[lowerLipInner[i]];
-    ctx.lineTo(pt.x * vw, pt.y * vh);
-  }
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
-}
-
+// ─── Cosmetics (2D lip overlay - stays on canvas) ─────────
 // ─── Modified render loop to also handle cosmetics ────────
+/**
+ * The main rendering loop. Constantly updates the camera feed and 
+ * runs the face landmark detection on every frame if active.
+ */
 function renderLoopFull() {
   if (!faceLandmarker || !currentProduct) {
     if (currentCategory !== 'cosmetics') renderer.render(scene, camera);
@@ -645,13 +500,18 @@ function renderLoopFull() {
 }
 
 // ─── Init ──────────────────────────────────────────────────
+/**
+ * Bootstraps the application, loads dependencies (Three.js, MediaPipe),
+ * and attaches UI event listeners.
+ * @async
+ */
 async function init() {
   const params = new URLSearchParams(window.location.search);
-  currentCategory = params.get('category') || 'eyewear';
+  currentCategory = 'eyewear';
   if (!CATEGORIES[currentCategory]) currentCategory = 'eyewear';
 
   const cat = CATEGORIES[currentCategory];
-  document.title = `${cat.label} — AELTRIX`;
+  document.title = `${cat.label} - AELTRIX`;
   categoryLabel.textContent = cat.label;
 
   enableCameraBtn.addEventListener('click', startCamera);
@@ -686,6 +546,11 @@ async function init() {
 }
 
 // ─── Camera ────────────────────────────────────────────────
+/**
+ * Requests camera permissions and starts the video stream.
+ * Triggers the 3D engine once the stream is successfully running.
+ * @async
+ */
 async function startCamera() {
   enableCameraBtn.textContent = "Loading 3D Engine...";
   enableCameraBtn.disabled = true;
@@ -730,6 +595,9 @@ async function startCamera() {
 }
 
 // ─── Product Panel ─────────────────────────────────────────
+/**
+ * Builds the UI product selection panel dynamically based on the catalog.
+ */
 function buildProductPanel() {
   const cat = CATEGORIES[currentCategory];
   panelTitle.textContent = cat.panelTitle;
@@ -760,6 +628,12 @@ function buildProductPanel() {
   });
 }
 
+/**
+ * Handles the selection of a product from the UI panel.
+ * Updates the state and re-renders the 3D model.
+ * @param {Object} product - The selected product data.
+ * @param {HTMLElement} element - The DOM element of the selected option.
+ */
 function selectProduct(product, element) {
   currentProduct = product;
   panelProducts.querySelectorAll('.product-option').forEach(el => el.classList.remove('active'));
@@ -769,32 +643,7 @@ function selectProduct(product, element) {
 
 // ─── Product Thumbnails ────────────────────────────────────
 function getProductThumbnail(product) {
-  switch (currentCategory) {
-    case 'eyewear':
-      return `<svg viewBox="0 0 60 30" fill="none">
-        <rect x="2" y="5" width="22" height="18" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
-        <rect x="36" y="5" width="22" height="18" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
-        <path d="M24 12 Q30 8 36 12" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/>
-      </svg>`;
-    case 'jewelry':
-      if (product.id.includes('necklace') || product.id === 'choker') {
-        return `<svg viewBox="0 0 50 50" fill="none">
-          <path d="M10 15 Q25 35 40 15" stroke="${product.color}" stroke-width="2" fill="none"/>
-          <circle cx="25" cy="32" r="3" fill="${product.color}"/>
-        </svg>`;
-      }
-      return `<svg viewBox="0 0 50 50" fill="none">
-        <circle cx="16" cy="25" r="5" fill="${product.color}" opacity="0.7"/>
-        <circle cx="34" cy="25" r="5" fill="${product.color}" opacity="0.7"/>
-      </svg>`;
-    case 'apparel':
-      return `<svg viewBox="0 0 50 50" fill="none">
-        <path d="M18 8L8 15v30h34V15L32 8H18z" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="${product.color}40"/>
-        <path d="M18 8l7 7 7-7" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-      </svg>`;
-    default:
-      return `<svg viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="15" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/></svg>`;
-  }
+  return `<svg viewBox="0 0 60 30" fill="none"><rect x="2" y="5" width="22" height="18" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/><rect x="36" y="5" width="22" height="18" rx="4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/><path d="M24 12 Q30 8 36 12" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/></svg>`;
 }
 
 // ─── Capture Photo ─────────────────────────────────────────

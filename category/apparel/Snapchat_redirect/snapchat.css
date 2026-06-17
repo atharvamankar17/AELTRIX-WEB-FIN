@@ -1,0 +1,167 @@
+/* ============================================================
+   AELTRIX - Snapchat Redirect Modal Styles
+   @description: Styling for the Snapchat redirect modal in Apparel.
+   @author: Aeltrix Engineering
+   ============================================================ */
+
+.snapchat-btn {
+  background: #FFFC00; /* Snapchat Yellow */
+  color: #030305;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-primary, 'Outfit', sans-serif);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+}
+
+.snapchat-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+.snapchat-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Modal Overlay */
+.snapchat-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 3, 5, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.snapchat-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.snapchat-modal-content {
+  background: rgba(10, 10, 15, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 40px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.snapchat-modal.active .snapchat-modal-content {
+  transform: translateY(0);
+}
+
+.snapchat-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.snapchat-close:hover {
+  color: #ffffff;
+}
+
+.snapchat-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  color: #FFFC00; /* Snapchat Yellow */
+}
+
+.snapchat-modal-title {
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.snapchat-modal-desc {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.snapchat-qr-container {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 16px;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.snapchat-qr-container img {
+  width: 180px;
+  height: 180px;
+  display: block;
+}
+
+.snapchat-link-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.snapchat-link-box span {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.snapchat-action-btn {
+  background: #FFFC00; /* Snapchat Yellow */
+  color: #000000;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.snapchat-action-btn:hover {
+  background: #e6e300;
+  transform: translateY(-2px);
+}
